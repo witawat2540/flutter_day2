@@ -7,6 +7,8 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  List<String> litems = ["1", "2", "Third", "4"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,67 +16,118 @@ class _Page2State extends State<Page2> {
         title: Text("Page2"),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            height: 50,
-            width: 60,
-            color: Colors.indigo,
-          ),
           RaisedButton(
             child: Text("Click"),
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>Page3()));
+            onPressed: () {
+//              Navigator.push(context, MaterialPageRoute(builder: (context)=>Page3()));
+              showDialog(
+                  context: context,
+                  builder: (_) => new AlertDialog(
+                        title: new Text("ทดสอบแจ้งเตือน"),
+                        content: Column(
+                          children: [
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  hintText: "กรุณากรอกข้อความ",
+                                  labelText: "name",
+                                  filled: true,
+                                  prefixIcon:
+                                      Icon(Icons.supervised_user_circle),
+                              suffixIcon: Icon(Icons.map)),
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  hintText: "กรุณากรอกข้อความ",
+                                  labelText: "Phone",
+                                  filled: true,
+                                  prefixIcon:
+                                  Icon(Icons.supervised_user_circle),
+                                  suffixIcon: Icon(Icons.map)),
+                            ),
+                            TextFormField(
+                              decoration: InputDecoration(
+                                  hintText: "กรุณากรอกข้อความ",
+                                  labelText: "Address",
+                                  filled: true,
+                                  prefixIcon:
+                                  Icon(Icons.supervised_user_circle),
+                                  suffixIcon: Icon(Icons.map)),
+                            ),
+                          ],
+                        ),
+                        actions: <Widget>[
+                          RaisedButton(
+                            child: Text('Ok'),
+                            color: Colors.indigo,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          RaisedButton(
+                            child: Text('Close'),
+                            color: Colors.red,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      ));
             },
           ),
-//          SizedBox(width: 10,),
-          Container(
-            height: 50,
-            width: 60,
-            color: Colors.indigo,
-          ),
-//          SizedBox(width: 10,),
-          Container(
-            height: 50,
-            width: 60,
-            color: Colors.indigo,
-          ),
-//          SizedBox(width: 10,),
-          Container(
-            height: 50,
-            width: 60,
-            color: Colors.indigo,
-          ),
-//          SizedBox(width: 10,),
-          Container(
-            height: 50,
-            width: 60,
-            color: Colors.indigo,
-          ),
-        ],
+    DataTable(
+              columns: const <DataColumn>[
+                DataColumn(
+                  label: Text(
+                    'Name',
+
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Age',
+
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Role',
+
+                  ),
+                ),
+              ],
+              rows: <DataRow>[
+                for(int i = 0 ;i<5;i++)
+                  DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text('Sarah')),
+                      DataCell(Text('19')),
+                      DataCell(Text('Student')),
+
+                    ],
+                  ),
+              ],
+            )
+          ],
       ),
-//      body: ListView(
-//        children: [
-//          for (int i = 0; i < 20; i++)
-//            Card(
-//              child: ListTile(
-//                onTap: () {},
-//                title: Text("index : $i"),
-//                subtitle: Text("Name : Mr $i"),
-//                leading: Icon(
-//                  Icons.list,
+//        body: ListView.builder(
+//          itemCount: 10,
+//          scrollDirection: Axis.horizontal,
+//          itemBuilder: (BuildContext context, int index) {
+//            return Row(
+//              children: [
+//                Container(
+//                  height: 50,
+//                  width: 50,
 //                  color: Colors.indigo,
-//                ),
-//                trailing: Icon(
-//                  Icons.delete,
-//                  color: Colors.red,
-//                ),
-//              ),
-//            )
-//        ],
-//      ),
+//                )
+//              ],
+//            );
+//          },
+//        ));
     );
   }
 }

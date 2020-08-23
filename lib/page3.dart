@@ -8,12 +8,14 @@ class Page3 extends StatefulWidget {
 class _Page3State extends State<Page3> {
   bool selected = false;
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Page3"),
-        ),
+      appBar: AppBar(
+        title: Text("Page3"),
+      ),
         body: GestureDetector(
           onTap: () {
             setState(() {
@@ -36,18 +38,3 @@ class _Page3State extends State<Page3> {
     );
   }
 }
-//GridView.count(
-//crossAxisCount: 2,
-//children: List.generate(100, (index) {
-//return Container(
-//color: Colors.indigo,
-//margin: EdgeInsets.all(5.0),
-//child: Center(
-//child: Text(
-//'Item ${index + 1}',
-//style: TextStyle(fontSize: 20,color: Colors.white)
-//),
-//),
-//);
-//}),
-//),
