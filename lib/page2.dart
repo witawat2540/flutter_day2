@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_day2/page3.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:location/location.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class Page2 extends StatefulWidget {
   @override
@@ -8,126 +10,151 @@ class Page2 extends StatefulWidget {
 
 class _Page2State extends State<Page2> {
   List<String> litems = ["1", "2", "Third", "4"];
+  double lat, long;
+  Address first;
+  TextEditingController _adress = TextEditingController();
+
+  Future<Null> get_address_now() async {
+    final coordinates = new Coordinates(lat, long);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    setState(() {
+      first = addresses.first;
+    });
+    print(first.runtimeType);
+    print("${first.featureName} : ${first.addressLine}");
+  }
+  Future<void> get_Address_find()async{
+    final query = "มหาสารคาม";
+    var addresses = await Geocoder.local.findAddressesFromQuery(_adress.text);
+    setState(() {
+      first = addresses.first;
+    });
+    print("${first.featureName} : ${first.coordinates}");
+  }
+
+  Future<Null> getlatlug() async {
+    LocationData locationData = await getlocation();
+    setState(() {
+      lat = locationData.latitude;
+      long = locationData.longitude;
+    });
+    print('$lat,$long');
+    get_address_now();
+  }
+
+  Future<LocationData> getlocation() {
+    Location location = Location();
+    try {
+      return location.getLocation();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  void initState() {
+    getlatlug();
+    //get_address_now();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Page2"),
-      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          RaisedButton(
-            child: Text("Click"),
-            onPressed: () {
-//              Navigator.push(context, MaterialPageRoute(builder: (context)=>Page3()));
-              showDialog(
-                  context: context,
-                  builder: (_) => new AlertDialog(
-                        title: new Text("ทดสอบแจ้งเตือน"),
-                        content: Column(
-                          children: [
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: "กรุณากรอกข้อความ",
-                                  labelText: "name",
-                                  filled: true,
-                                  prefixIcon:
-                                      Icon(Icons.supervised_user_circle),
-                              suffixIcon: Icon(Icons.map)),
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: "กรุณากรอกข้อความ",
-                                  labelText: "Phone",
-                                  filled: true,
-                                  prefixIcon:
-                                  Icon(Icons.supervised_user_circle),
-                                  suffixIcon: Icon(Icons.map)),
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                  hintText: "กรุณากรอกข้อความ",
-                                  labelText: "Address",
-                                  filled: true,
-                                  prefixIcon:
-                                  Icon(Icons.supervised_user_circle),
-                                  suffixIcon: Icon(Icons.map)),
-                            ),
-                          ],
-                        ),
-                        actions: <Widget>[
-                          RaisedButton(
-                            child: Text('Ok'),
-                            color: Colors.indigo,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          RaisedButton(
-                            child: Text('Close'),
-                            color: Colors.red,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      ));
-            },
+          SizedBox(
+            height: 15,
           ),
-    DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    'Name',
-
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Container(
+                  padding: EdgeInsets.only(right: 10, left: 10),
+                  child: TextFormField(
+                    controller: _adress,
+                    decoration: InputDecoration(
+                      labelText: 'กรอกที่อยู่',
+                      filled: true,
+                    ),
                   ),
                 ),
-                DataColumn(
-                  label: Text(
-                    'Age',
-
-                  ),
+              ),
+              Expanded(
+                child: RaisedButton(
+                  onPressed: () {
+                    //get_address_now();
+                    get_Address_find();
+                  },
+                  child: Text('ค้นหา'),
                 ),
-                DataColumn(
-                  label: Text(
-                    'Role',
+              ),
+              SizedBox(
+                width: 15,
+              )
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
 
-                  ),
-                ),
-              ],
-              rows: <DataRow>[
-                for(int i = 0 ;i<5;i++)
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text('Sarah')),
-                      DataCell(Text('19')),
-                      DataCell(Text('Student')),
+            children: [
+              first == null
+                  ? Text('ที่อยู่ปัจุบันของคุณคือ : ')
+                  : Text('ที่อยู่ปัจุบันของคุณคือ : ' + 'ตำบล : '+first.locality),
+            ],
+          ),
+//          ' อำเภอ : '+first.subAdminArea
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
 
-                    ],
-                  ),
-              ],
-            )
-          ],
+            children: [
+              first == null
+                  ? Text('ที่อยู่ปัจุบันของคุณคือ : ')
+                  : Text(' อำเภอ : '+first.subAdminArea),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              first == null
+                  ? Text('ที่อยู่ปัจุบันของคุณคือ : ')
+                  : Text(first.adminArea),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          RaisedButton(
+            onPressed: () {
+              setState(() {
+                lat = first.coordinates.latitude;
+                long = first.coordinates.longitude;
+              });
+              MapsLauncher.launchCoordinates(
+                  lat, long, 'Google Headquarters are here');
+            //print('${first.coordinates}');
+            },
+            color: Colors.deepPurpleAccent,
+            textColor: Colors.white,
+            child: Text('ไปกันเลย'),
+          ),
+        ],
       ),
-//        body: ListView.builder(
-//          itemCount: 10,
-//          scrollDirection: Axis.horizontal,
-//          itemBuilder: (BuildContext context, int index) {
-//            return Row(
-//              children: [
-//                Container(
-//                  height: 50,
-//                  width: 50,
-//                  color: Colors.indigo,
-//                )
-//              ],
-//            );
-//          },
-//        ));
     );
   }
 }

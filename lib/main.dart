@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_day2/page2.dart';
+import 'package:flutter_day2/page3.dart';
+import 'package:flutter_day2/splashscreen.dart';
 import 'package:flutter_day2/utity.dart';
 import 'package:toast/toast.dart';
 
 import 'mydrawer.dart';
 
-void main() {
+Future<void> main() async {
   runApp(MyApp());
 }
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: "Noto"),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Splash(),
       routes: {'/pages2': (context) => Page2()},
     );
   }
@@ -51,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage>
       }
       setState(() {});
     });
+    //getlatlug();
   }
 
   @override
@@ -64,8 +67,8 @@ class _MyHomePageState extends State<MyHomePage>
           indicatorColor: Colors.white,
           tabs: <Widget>[
             Tab(
-              text: "Tab1",
-              icon: Icon(Icons.fastfood),
+              text: "หน้าแผนที่",
+              icon: Icon(Icons.map),
             ),
             Tab(
               text: "tab2",
@@ -95,16 +98,8 @@ class _MyHomePageState extends State<MyHomePage>
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        Container(
-          child: Center(
-            child: Text('Tab 1'),
-          ),
-        ),
-        Container(
-          child: Center(
-            child: Text('Tab 2'),
-          ),
-        )
+        Page2(),
+       Page3()
       ],
     );
   }

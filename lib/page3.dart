@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Page3 extends StatefulWidget {
   @override
@@ -6,35 +9,64 @@ class Page3 extends StatefulWidget {
 }
 
 class _Page3State extends State<Page3> {
-  bool selected = false;
+  //Image _image;
+  File _image;
 
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //final image = await FlutterWebImagePicker.getImage;
 
+    setState(() {
+      _image = image;
+    });
+    print(_image);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Page3"),
-      ),
-        body: GestureDetector(
-          onTap: () {
-            setState(() {
-              selected = !selected;
-            });
-          },
-          child: Center(
-            child: AnimatedContainer(
-              width: selected ? 200.0 : 100.0,
-              height: selected ? 100.0 : 200.0,
-              color: selected ? Colors.red : Colors.blue,
-              alignment:
-              selected ? Alignment.center : AlignmentDirectional.topCenter,
-              duration: Duration(seconds: 2),
-              curve: Curves.fastOutSlowIn,
-              child: FlutterLogo(size: 75),
-            ),
+        body: Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            child: _image == null
+                ? Text('No image selected.')
+                : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        child: _image == null
+                            ? Text('No image selected.')
+                            : Container(
+                                child: Image.file(
+                                  _image,
+                                  width: 300,
+                                  height: 300,
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
           ),
-        )
-    );
+          SizedBox(
+            height: 20,
+          ),
+          RaisedButton(
+            onPressed: () {
+              getImage();
+            },
+            child: Text('Open Photo'),
+            color: Colors.deepPurpleAccent,
+            textColor: Colors.white,
+          )
+        ],
+      ),
+    ));
   }
 }
+
