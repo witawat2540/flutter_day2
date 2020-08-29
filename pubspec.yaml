@@ -39,7 +39,7 @@ dependencies:
   path_provider:
   path:
   video_player: ^0.10.2+1
-  multi_image_picker: ^4.7.12
+  flutter_local_notifications: any
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +59,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - image/logo.png
+    - video/catoon.mp4
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
