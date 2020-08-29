@@ -1,3 +1,4 @@
+import 'package:camera/new/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_day2/page2.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_day2/splashscreen.dart';
 import 'package:flutter_day2/utity.dart';
 import 'package:toast/toast.dart';
 
+import 'Tab3.dart';
 import 'mydrawer.dart';
 
 Future<void> main() async {
@@ -44,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, initialIndex: 0, length: 2);
+    _tabController = TabController(vsync: this, initialIndex: 0, length: 3);
     _tabController.addListener(() {
       if (_tabController.index == 1) {
         showFab = true;
@@ -72,7 +74,11 @@ class _MyHomePageState extends State<MyHomePage>
             ),
             Tab(
               text: "tab2",
-              icon: Icon(Icons.history),
+              icon: Icon(Icons.camera),
+            ),
+            Tab(
+              text: "tab3",
+              icon: Icon(Icons.videocam),
             ),
           ],
         ),
@@ -99,7 +105,8 @@ class _MyHomePageState extends State<MyHomePage>
       controller: _tabController,
       children: <Widget>[
         Page2(),
-       Page3()
+       Page3(),
+        Vedio_Picker()
       ],
     );
   }
